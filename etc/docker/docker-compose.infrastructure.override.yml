@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_PASSWORD: "myPassw0rd"
+
+  keycloak:
+    ports:
+      - "8080:8080"
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: "postgres-db"
+      DB_DATABASE: "keycloak"
+      DB_USER: "postgres"
+      DB_PASSWORD: "myPassw0rd"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: "myAdminPassw0rd*"
+      KC_HEALTH_ENABLED: "true"
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+
+    
