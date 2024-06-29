@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-MyMeetings.Keycloak.DbMigrator-78f05e85-dcac-4f4c-ad62-d0ba113b6e2a</UserSecretsId>
@@ -9,7 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="Keycloak.Net.Core" Version="1.0.26" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.4.24266.19" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
