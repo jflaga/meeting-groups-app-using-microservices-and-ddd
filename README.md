@@ -25,3 +25,7 @@ Keycloak DB Migrator reference: [eShopOnAbp's `EShopOnAbp.Keycloak.DbMigrator`](
 
 [Blazor Server Application with Keycloak Authentication](https://github.com/csinisa/blazor_server_keycloak/commit/4a20c0e7155feaf549d271e8ee56aaca9bf22bb9)
 
+ - This app's logout was working, but mine was not working because of error "Missing parameters: id_token_hint". Error disappears if I use the ["Blazor Web App with OpenID Connect (OIDC)" sample fron dotnet](https://github.com/dotnet/blazor-samples/tree/main/8.0/BlazorWebAppOidc)
+
+[Blazor Samples from dotnet GitHub: Blazor Web App with OpenID Connect (OIDC)](https://github.com/dotnet/blazor-samples/tree/main/8.0/BlazorWebAppOidc)
+

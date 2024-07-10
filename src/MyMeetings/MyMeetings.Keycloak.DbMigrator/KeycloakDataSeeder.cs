@@ -199,6 +199,7 @@ public class KeycloakDataSeeder
             .GetClientsAsync(keycloakOptions.RealmName, clientId: clientId))
             .FirstOrDefault();
 
+        var rootUrl = $"{configuration[$"Clients:{clientAppName}:RootUrl"]}";
         if (client == null)
         {
             client = new Client
@@ -209,11 +210,16 @@ public class KeycloakDataSeeder
                 Enabled = true,
                 RedirectUris = new List<string>
                 {
-                    $"{configuration[$"Clients:{clientAppName}:RootUrl"].TrimEnd('/')}/signin-oidc"
+                    $"{rootUrl.TrimEnd('/')}/signin-oidc"
                 },
                 FrontChannelLogout = true,
                 PublicClient = false,
                 Secret = configuration[$"Clients:{clientAppName}:Secret"],
+            };
+
+            client.Attributes = new Dictionary<string, object>
+            {
+                { "post.logout.redirect.uris", $"{rootUrl.TrimEnd('/')}/signout-callback-oidc" }
             };
 
             await keycloakClient.CreateClientAsync(keycloakOptions.RealmName, client);
@@ -223,6 +229,13 @@ public class KeycloakDataSeeder
             await AddOptionalClientScopesAsync(clientId, new List<string> { 
                 "TestWebApi_ClientScope" 
             });
+        }
+
+        var noPostLogoutRedirectUrisYet = !client.Attributes.Any(x => x.Key == "post.logout.redirect.uris");
+        if (noPostLogoutRedirectUrisYet)
+        {
+            client.Attributes.Add("post.logout.redirect.uris", $"{rootUrl.TrimEnd('/')}/signout-callback-oidc");
+            await keycloakClient.UpdateClientAsync(keycloakOptions.RealmName, client.Id, client);
         }
     }
 
