@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.RequireHttpsMetadata = authServerSettings.RequireHttpsMetadata;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = authServerSettings.ValidateIssuer,
+            //ValidateIssuer = authServerSettings.ValidateIssuer, // set to true be default??
         };
     });
 

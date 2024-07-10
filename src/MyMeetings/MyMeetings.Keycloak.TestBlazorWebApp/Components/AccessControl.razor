@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <a href="logout?client_id=my-blazor-server-app">Log out (@context.User.Identity.Name)</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="login?redirectUri=@Uri.EscapeDataString(Navigation.BaseUri)">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}

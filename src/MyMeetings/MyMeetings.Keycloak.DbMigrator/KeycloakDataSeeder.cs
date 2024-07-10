@@ -103,6 +103,7 @@ public class KeycloakDataSeeder
     private async Task CreateClientsAsync()
     {
         await CreatePostmanClientAsync();
+        await CreateTestBlazorWebAppClientAsync();
     }
 
     private async Task CreateScopeAsync(string scopeName)
@@ -172,7 +173,56 @@ public class KeycloakDataSeeder
 
             await keycloakClient.CreateClientAsync(keycloakOptions.RealmName, postmanClient);
 
-            await AddOptionalClientScopesAsync(PostmanClientId, new List<string> { "TestWebApi_ClientScope" });
+            // It should be optional because Alice should be able to decide the intended recipient(s) of the access token by specifying different scopes.
+            // from https://dev.to/metacosmos/how-to-configure-audience-in-keycloak-kp4
+            await AddOptionalClientScopesAsync(PostmanClientId, new List<string> { 
+                "TestWebApi_ClientScope" 
+            });
+        }
+
+        // override: make postman client a confidential client instead of a public client
+        if (postmanClient.PublicClient ?? true)
+        {
+            postmanClient.PublicClient = false;
+            postmanClient.Secret = configuration["Clients:Postman:Secret"];
+
+            await keycloakClient.UpdateClientAsync(keycloakOptions.RealmName, postmanClient.Id, postmanClient);
+        }
+    }
+
+    private async Task CreateTestBlazorWebAppClientAsync()
+    {
+        const string clientAppName = "TestBlazorWebApp";
+        const string clientId = $"{clientAppName}_Client";
+
+        var client = (await keycloakClient
+            .GetClientsAsync(keycloakOptions.RealmName, clientId: clientId))
+            .FirstOrDefault();
+
+        if (client == null)
+        {
+            client = new Client
+            {
+                ClientId = clientId,
+                Name = $"{clientAppName} Client",
+                Protocol = "openid-connect",
+                Enabled = true,
+                RedirectUris = new List<string>
+                {
+                    $"{configuration[$"Clients:{clientAppName}:RootUrl"].TrimEnd('/')}/signin-oidc"
+                },
+                FrontChannelLogout = true,
+                PublicClient = false,
+                Secret = configuration[$"Clients:{clientAppName}:Secret"],
+            };
+
+            await keycloakClient.CreateClientAsync(keycloakOptions.RealmName, client);
+
+            // It should be optional because Alice should be able to decide the intended recipient(s) of the access token by specifying different scopes.
+            // from https://dev.to/metacosmos/how-to-configure-audience-in-keycloak-kp4
+            await AddOptionalClientScopesAsync(clientId, new List<string> { 
+                "TestWebApi_ClientScope" 
+            });
         }
     }
 
