@@ -6,7 +6,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using MyMeetings.Keycloak.TestBlazorWebApp;
 using MyMeetings.Keycloak.TestBlazorWebApp.Components;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -116,7 +118,10 @@ builder.Services.AddAuthentication(MS_OIDC_SCHEME)
         // claims to ASP.NET Core's ClaimTypes isn't necessary.
 
         oidcOptions.MapInboundClaims = false;
-        oidcOptions.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
+
+        // We are telling the authentication that the roles by this name will be used
+        // to display the name, and for checking roles. (from https://codyanhorn.tech/blog/blazor/2020/09/06/Blazor-Server-Get-Access-Token-for-User.html)
+        oidcOptions.TokenValidationParameters.NameClaimType = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Name;
         oidcOptions.TokenValidationParameters.RoleClaimType = "role";
         // ........................................................................
 
@@ -149,7 +154,41 @@ builder.Services.AddAuthentication(MS_OIDC_SCHEME)
         // This should be true in Production
         oidcOptions.RequireHttpsMetadata = authServerSettings.RequireHttpsMetadata;
 
+        oidcOptions.Scope.Add("TestWebApi_ClientScope");
+
+        oidcOptions.Events = new OpenIdConnectEvents
+        {
+            // from https://codyanhorn.tech/blog/blazor/2020/09/06/Blazor-Server-Get-Access-Token-for-User.html
+            OnTokenValidated = eventArgs =>
+            {
+                // We get the AccessToken from the ProtocolMessage.
+                // WARNING: This might change based on what type of Authentication Provider you are using
+                var accessToken = eventArgs.TokenEndpointResponse.AccessToken;
+                eventArgs.Principal.AddIdentity(new ClaimsIdentity(
+                    new Claim[]
+                    {
+                    // Make note of the claim with the name "access_token"
+                    // We will use it in an Authentication Service for look up.
+                    new Claim("access_token", accessToken)
+                    }
+                ));
+
+                //// Here we take the accessToken and put all the claims into another
+                //// Identity on the users Principal, giving us access to them when needed.
+                //var jwtToken = new JwtSecurityToken(accessToken);
+                //eventArgs.Principal.AddIdentity(new ClaimsIdentity(
+                //    jwtToken.Claims,
+                //    "jwt",
+                //    eventArgs.Options.TokenValidationParameters.NameClaimType,
+                //    eventArgs.Options.TokenValidationParameters.RoleClaimType
+                //));
+
+                return Task.CompletedTask;
+            },
+        };
+
     })
+    //.EnableTokenAcquisitionToCallDownstreamApi()
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 // ConfigureCookieOidcRefresh attaches a cookie OnValidatePrincipal callback to get
@@ -166,6 +205,10 @@ builder.Services.AddAuthorization();
 //        .Build())
 //    //.AddPolicy("AnonymousPolicy", policy => policy.RequireAssertion(_ => true))
 //    ;
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<IAuthenticationService, IdentityAuthenticationService>();
 
 var app = builder.Build();
 
