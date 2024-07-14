@@ -4,8 +4,12 @@ An imitation of ["Modular Monolith with DDD"](https://github.com/kgrzybek/modula
 
 Domain is described here: https://github.com/kgrzybek/modular-monolith-with-ddd?tab=readme-ov-file#2-domain
 
+Plan: Create a microservice for the `Meetings` subdomain (the core subdomain). The other subdomains will be placed in a modular monolith. Use Keycloak as IDP.
 
-# Keycloak, Authentication
+
+# Some resources
+
+## Keycloak, Authentication
 
 Keycloak DB Migrator reference: [eShopOnAbp's `EShopOnAbp.Keycloak.DbMigrator`](https://github.com/abpframework/eShopOnAbp/tree/327fbcc341fd7b5bb7dfa223593d3df2a7721c89/shared/EShopOnAbp.Keycloak.DbMigrator)
 

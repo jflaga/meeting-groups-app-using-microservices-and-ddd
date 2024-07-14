@@ -2,6 +2,7 @@
 using Keycloak.Net.Models.Clients;
 using Keycloak.Net.Models.ClientScopes;
 using Keycloak.Net.Models.ProtocolMappers;
+using Keycloak.Net.Models.Users;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ public class KeycloakDataSeeder
 
         await UpdateRealmSettingsAsync();
         await UpdateAdminUserAsync();
+        await CreateUserJohnDoeAsync();
         await CreateClientScopesAsync();
         await CreateClientsAsync();
     }
@@ -90,6 +92,36 @@ public class KeycloakDataSeeder
 
             logger.LogInformation("Updating admin user with email and first name...");
             await keycloakClient.UpdateUserAsync(keycloakOptions.RealmName, adminUser.Id, adminUser);
+        }
+    }
+
+    private async Task CreateUserJohnDoeAsync()
+    {
+        var userJohnDoeExists = (await keycloakClient.GetUsersAsync(keycloakOptions.RealmName))
+            .Any(x => x.Email == "johndoe@example.com");
+        if (!userJohnDoeExists)
+        {
+            var user = new User()
+            {
+                UserName = "johndoe",
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "johndoe@example.com",
+                Enabled = true,
+                Credentials = [new() { Type = "password", Value = "johndoe", Temporary = false}]
+            };
+            await keycloakClient.CreateUserAsync(keycloakOptions.RealmName, user);
+
+            //try
+            //{
+            //    var userId = await keycloakClient.CreateAndRetrieveUserIdAsync(keycloakOptions.RealmName, user);
+            //    var johnDoe = await keycloakClient.GetUserAsync(keycloakOptions.RealmName, userId);
+            //    //johnDoe.
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw;
+            //}
         }
     }
 

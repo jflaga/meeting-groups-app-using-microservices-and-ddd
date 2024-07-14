@@ -14,7 +14,9 @@
 
 @if (forecasts == null)
 {
-    <p><em>Loading...</em></p>
+    <hr />
+    <p><em>@message</em></p>
+    <hr />
 }
 else
 {
@@ -43,6 +45,7 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+    string message = "Loading...";
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,8 +58,10 @@ else
         }
         catch (Exception ex)
         {
-            
-            throw;
+            if (ex.Message.Contains("Forbidden"))
+            {
+                message = "Forbidden. Please login as Admin.";
+            }
         }
     }
 
