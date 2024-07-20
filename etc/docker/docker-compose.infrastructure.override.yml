@@ -21,5 +21,10 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: "admin"
       KC_HEALTH_ENABLED: "true"
     entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+    
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
 
     

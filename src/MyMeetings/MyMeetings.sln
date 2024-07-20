@@ -7,9 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "keycloak", "keycloak", "{FC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMeetings.Keycloak.DbMigrator", "MyMeetings.Keycloak.DbMigrator\MyMeetings.Keycloak.DbMigrator.csproj", "{6E44E116-AA46-4D9F-B095-7DDBFE128BE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMeetings.Keycloak.TestWebApi", "MyMeetings.Keycloak.TestWebApi\MyMeetings.Keycloak.TestWebApi.csproj", "{04AEB633-7B98-430D-8DEF-FDB41CEF88B3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMeetings.Keycloak.TestBlazorWebApp", "MyMeetings.Keycloak.TestBlazorWebApp\MyMeetings.Keycloak.TestBlazorWebApp.csproj", "{72C64324-C4BA-4CB6-BF79-9C161DDC9285}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMeetings.Administration.WebApi", "MyMeetings.Administration.WebApi\MyMeetings.Administration.WebApi.csproj", "{DA5466F6-20B4-442B-BD43-F8B779CE90C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,22 +19,16 @@ Global
 		{6E44E116-AA46-4D9F-B095-7DDBFE128BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E44E116-AA46-4D9F-B095-7DDBFE128BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E44E116-AA46-4D9F-B095-7DDBFE128BE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04AEB633-7B98-430D-8DEF-FDB41CEF88B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04AEB633-7B98-430D-8DEF-FDB41CEF88B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04AEB633-7B98-430D-8DEF-FDB41CEF88B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04AEB633-7B98-430D-8DEF-FDB41CEF88B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72C64324-C4BA-4CB6-BF79-9C161DDC9285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72C64324-C4BA-4CB6-BF79-9C161DDC9285}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72C64324-C4BA-4CB6-BF79-9C161DDC9285}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72C64324-C4BA-4CB6-BF79-9C161DDC9285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5466F6-20B4-442B-BD43-F8B779CE90C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5466F6-20B4-442B-BD43-F8B779CE90C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5466F6-20B4-442B-BD43-F8B779CE90C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5466F6-20B4-442B-BD43-F8B779CE90C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6E44E116-AA46-4D9F-B095-7DDBFE128BE7} = {FCF87348-92D6-4767-8768-7F9490FF9D77}
-		{04AEB633-7B98-430D-8DEF-FDB41CEF88B3} = {FCF87348-92D6-4767-8768-7F9490FF9D77}
-		{72C64324-C4BA-4CB6-BF79-9C161DDC9285} = {FCF87348-92D6-4767-8768-7F9490FF9D77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3C3580F9-7ADC-4DD2-9A7C-0094F7766F2C}

@@ -24,6 +24,17 @@ services:
     networks:
       - meeting-groups-app-network
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management-alpine
+    healthcheck:
+        test: rabbitmq-diagnostics -q ping
+        interval: 30s
+        timeout: 30s
+        retries: 3
+    networks: 
+      - meeting-groups-app-network
+
 volumes:
   postgres_data:
 
