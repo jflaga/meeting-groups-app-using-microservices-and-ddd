@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMeetings.Meetings.WebApi", "MyMeetings.Meetings.WebApi\MyMeetings.Meetings.WebApi.csproj", "{3A5AA819-A0BB-4CF9-812D-F15EF4BAF729}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMeetings.Meetings.WebApi", "MyMeetings.Meetings.WebApi\MyMeetings.Meetings.WebApi.csproj", "{3A5AA819-A0BB-4CF9-812D-F15EF4BAF729}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{685D3842-7C03-458C-B948-80651DED7F04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMeetings.Meetings.IntegrationTests", "Tests\MyMeetings.Meetings.IntegrationTests\MyMeetings.Meetings.IntegrationTests.csproj", "{A720135F-51B6-4CCD-98E3-C16CCC790B74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{3A5AA819-A0BB-4CF9-812D-F15EF4BAF729}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A5AA819-A0BB-4CF9-812D-F15EF4BAF729}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A5AA819-A0BB-4CF9-812D-F15EF4BAF729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A720135F-51B6-4CCD-98E3-C16CCC790B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A720135F-51B6-4CCD-98E3-C16CCC790B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A720135F-51B6-4CCD-98E3-C16CCC790B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A720135F-51B6-4CCD-98E3-C16CCC790B74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A720135F-51B6-4CCD-98E3-C16CCC790B74} = {685D3842-7C03-458C-B948-80651DED7F04}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {02572206-4E10-45D0-B50F-B11A4F6192C4}

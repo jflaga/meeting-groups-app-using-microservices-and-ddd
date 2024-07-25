@@ -56,10 +56,20 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 app.MapPost("/meetings/MeetingGroupProposals",
-    async ([FromBody] MeetingGroupProposal proposal, 
+    async ([FromBody] MeetingGroupProposalInputDto dto, 
         [FromServices] MeetingGroupProposalsService service,
         IPublishEndpoint publishEndpoint) =>
     {
+        var proposal = new MeetingGroupProposal
+        {
+            Id = Guid.NewGuid(),
+            Name = dto.Name,
+            LocationCity = dto.LocationCity,
+            LocationCountryCode = dto.LocationCountryCode,
+            ProposalDate = DateTimeOffset.Now,
+            ProposalUserId = Guid.NewGuid(),
+            StatusCode = "InVerification"
+        };
         service.Add(proposal);
 
         await publishEndpoint.Publish(new MeetingGroupProposedIntegrationEvent
@@ -71,6 +81,10 @@ app.MapPost("/meetings/MeetingGroupProposals",
             ProposalUserId = proposal.ProposalUserId,
             ProposalDate = proposal.ProposalDate,
         });
+
+        return Results.Created(
+            $"/meetings/MeetingGroupProposals/{proposal.Id}",
+            proposal); // TODO: Create output DTO
     });
 
 app.MapGet("/meetings/MeetingGroupProposals",
@@ -79,9 +93,17 @@ app.MapGet("/meetings/MeetingGroupProposals",
         return service.GetAll();
     });
 
+app.MapGet("/meetings/MeetingGroupProposals/{id}",
+    (Guid id, [FromServices] MeetingGroupProposalsService service) =>
+    {
+        return service.Get(id);
+    });
+
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
+public partial class Program { }

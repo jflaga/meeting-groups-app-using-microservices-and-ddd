@@ -13,4 +13,9 @@ public class MeetingGroupProposalsService
     {
         return meetingGroupProposals;
     }
+
+    public MeetingGroupProposal? Get(Guid id)
+    {
+        return meetingGroupProposals.FirstOrDefault(x => x.Id == id);
+    }
 }

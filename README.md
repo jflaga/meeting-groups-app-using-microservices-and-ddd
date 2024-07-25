@@ -33,3 +33,14 @@ Keycloak DB Migrator reference: [eShopOnAbp's `EShopOnAbp.Keycloak.DbMigrator`](
 
 [Blazor Samples from dotnet GitHub: Blazor Web App with OpenID Connect (OIDC)](https://github.com/dotnet/blazor-samples/tree/main/8.0/BlazorWebAppOidc)
 
+
+## Messaging with MassTransit and RabbitMQ
+
+[Using MassTransit with RabbitMQ in ASP.NET Core](https://code-maze.com/masstransit-rabbitmq-aspnetcore/)
+
+[.NET Aspire Messaging With RabbitMQ & MassTransit](https://fiyaz-hasan-me-blog.azurewebsites.net/aspire-messaging-with-rabbitmq-and-masstransit/)
+
+
+## Integration Testing
+
+["Integration Testing for ASP.NET APIs" by Erik Dahl](https://knowyourtoolset.com/2024/01/integration-testing/)
