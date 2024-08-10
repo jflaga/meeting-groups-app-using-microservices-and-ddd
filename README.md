@@ -44,3 +44,11 @@ Keycloak DB Migrator reference: [eShopOnAbp's `EShopOnAbp.Keycloak.DbMigrator`](
 ## Integration Testing
 
 ["Integration Testing for ASP.NET APIs" by Erik Dahl](https://knowyourtoolset.com/2024/01/integration-testing/)
+
+["Your Essential Guide to xUnit Lifecycle"](https://www.youtube.com/watch?v=lMKkKx68xHg)
+
+ - IAsyncLifetime, BeforeAfterTestAtrribute, Fixture, IClassFixture, ICollectionFixture
+
+["How to Test RabbitMQ with Testcontainers in .NET"](https://www.youtube.com/watch?v=DMs3ZuakHGA)
+
+["MassTransit Testing with Web Application Factory"](https://www.youtube.com/watch?v=Uzme7vInDz0) by Chris Patterson
