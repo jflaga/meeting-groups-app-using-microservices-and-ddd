@@ -130,6 +130,7 @@ public class KeycloakDataSeeder
         await CreateScopeAsync("TestWebApi_ClientScope");
         //await CreateScopeAsync("SampleWebApiService_Alice");
         //await CreateScopeAsync("SampleWebApiService_Bob");
+        await CreateScopeAsync("MeetingsModuleWebApi_ClientScope");
     }
 
     private async Task CreateClientsAsync()
@@ -205,12 +206,14 @@ public class KeycloakDataSeeder
 
             await keycloakClient.CreateClientAsync(keycloakOptions.RealmName, postmanClient);
 
-            // It should be optional because Alice should be able to decide the intended recipient(s) of the access token by specifying different scopes.
-            // from https://dev.to/metacosmos/how-to-configure-audience-in-keycloak-kp4
-            await AddOptionalClientScopesAsync(PostmanClientId, new List<string> { 
-                "TestWebApi_ClientScope" 
-            });
         }
+
+        // It should be optional because Alice should be able to decide the intended recipient(s) of the access token by specifying different scopes.
+        // from https://dev.to/metacosmos/how-to-configure-audience-in-keycloak-kp4
+        await AddOptionalClientScopesAsync(PostmanClientId, new List<string> {
+            "TestWebApi_ClientScope",
+            "MeetingsModuleWebApi_ClientScope"
+        });
 
         // override: make postman client a confidential client instead of a public client
         if (postmanClient.PublicClient ?? true)
