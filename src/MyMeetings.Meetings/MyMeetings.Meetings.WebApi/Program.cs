@@ -1,5 +1,7 @@
 using MassTransit;
 using MassTransit.Transports;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyMeetings.Meetings.IntegrationEvents;
 using MyMeetings.Meetings.WebApi.MeetingGroupProposals;
@@ -10,6 +12,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var authServerSettings = new AuthServerSettings();
+builder.Configuration.GetRequiredSection(nameof(AuthServerSettings))
+    .Bind(authServerSettings);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = authServerSettings.Url;
+        options.Audience = authServerSettings.Audience;
+        options.RequireHttpsMetadata = authServerSettings.RequireHttpsMetadata;
+    });
+
+builder.Services.AddAuthorizationBuilder()
+    .SetDefaultPolicy(new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build());
 
 builder.Services.AddMassTransit(x =>
 {
@@ -34,6 +53,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 var summaries = new[]
 {
@@ -85,7 +107,8 @@ app.MapPost("/meetings/MeetingGroupProposals",
         return Results.Created(
             $"/meetings/MeetingGroupProposals/{proposal.Id}",
             proposal); // TODO: Create output DTO
-    });
+    })
+.RequireAuthorization();
 
 app.MapGet("/meetings/MeetingGroupProposals",
     ([FromServices] MeetingGroupProposalsService service) =>
