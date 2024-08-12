@@ -43,7 +43,11 @@ Keycloak DB Migrator reference: [eShopOnAbp's `EShopOnAbp.Keycloak.DbMigrator`](
 
 ## Integration Testing
 
-["Integration Testing for ASP.NET APIs" by Erik Dahl](https://knowyourtoolset.com/2024/01/integration-testing/)
+"Integration Testing for ASP.NET APIs" by Erik Dahl
+
+ - [Part 1: Basics](https://knowyourtoolset.com/2024/01/integration-testing/)
+ - [Part 2: Data (TestContainers)](https://knowyourtoolset.com/2024/01/integration-testing-data/)
+ - [Part 3: Auth](https://knowyourtoolset.com/2024/01/integration-testing-auth/)
 
 ["Your Essential Guide to xUnit Lifecycle"](https://www.youtube.com/watch?v=lMKkKx68xHg)
 
@@ -52,3 +56,15 @@ Keycloak DB Migrator reference: [eShopOnAbp's `EShopOnAbp.Keycloak.DbMigrator`](
 ["How to Test RabbitMQ with Testcontainers in .NET"](https://www.youtube.com/watch?v=DMs3ZuakHGA)
 
 ["MassTransit Testing with Web Application Factory"](https://www.youtube.com/watch?v=Uzme7vInDz0) by Chris Patterson
+
+### On the value of integration tests
+
+> "In my experience, writing "integration" tests in ASP.NET Core are for controllers is far more valuable than trying to unit test them, and is easier than ever in ASP.NET Core"
+> --- [Andrew Lock](https://andrewlock.net/should-you-unit-test-controllers-in-aspnetcore/)
+
+> "Writing integration (or functional) tests on a C# API gives more confidence in the code that is written, in addition, it increases the productivity during all stages of development."
+> --- [Tim Deschryver](https://timdeschryver.dev/blog/why-writing-integration-tests-on-a-csharp-api-is-a-productivity-booster) 
+
+> "In my opinion, one good integration test is worth 1,000 unit tests."
+> ---  [Khalid Abuhakmeh](https://khalidabuhakmeh.com/secrets-of-a-dotnet-professional#integration-tests--unit-tests)
+    

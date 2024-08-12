@@ -23,6 +23,7 @@ public class MyMeetingsWebApplicationFactory<T> : WebApplicationFactory<T> where
         builder.ConfigureServices(services =>
         {
             services.AddMassTransitTestHarness();
+            services.AddSingleton<IStartupFilter>(new AutoAuthorizeStartupFilter());
         });
     }
 }
