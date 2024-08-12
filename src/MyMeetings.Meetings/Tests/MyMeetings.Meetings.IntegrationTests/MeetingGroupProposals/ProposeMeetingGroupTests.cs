@@ -1,48 +1,19 @@
-﻿using DotNet.Testcontainers.Builders;
-using MyMeetings.Meetings.IntegrationTests._Utils;
+﻿using MyMeetings.Meetings.IntegrationTests._Utils;
 using MyMeetings.Meetings.WebApi.MeetingGroupProposals;
 using System.Net;
 using System.Text.Json;
-using Testcontainers.RabbitMq;
-using MassTransit.Testing;
 using MyMeetings.Meetings.IntegrationEvents;
 
 namespace MyMeetings.Meetings.IntegrationTests.MeetingGroupProposals;
 
-public class ProposeMeetingGroupTests : IClassFixture<MyMeetingsWebApplicationFactory<Program>>, IAsyncLifetime
+public class ProposeMeetingGroupTests : IClassFixture<MyMeetingsWebApplicationFactory>
 {
     private static readonly JsonSerializerOptions JsonWebOptions = new(JsonSerializerDefaults.Web);
-    private readonly MyMeetingsWebApplicationFactory<Program> factory;
+    private readonly MyMeetingsWebApplicationFactory factory;
 
-    private readonly RabbitMqContainer rabbitMqContainer;
-    private readonly ITestHarness MassTransitTestHarness;
-
-    public ProposeMeetingGroupTests(MyMeetingsWebApplicationFactory<Program> factory)
+    public ProposeMeetingGroupTests(MyMeetingsWebApplicationFactory factory)
     {
         this.factory = factory;
-
-        rabbitMqContainer = new RabbitMqBuilder()
-            //.WithImage("rabbitmq:3-management-alpine")
-            //.WithPortBinding(5673)
-            ////.WithEnvironment("RABBITMQ_DEFAULT_USER", RabbitMqUsername)
-            ////.WithEnvironment("RABBITMQ_DEFAULT_PASS", RabbitMqPassword)
-            .WithWaitStrategy(Wait.ForUnixContainer()
-                .UntilPortIsAvailable(5672)
-                //.UntilPortIsAvailable(15672) // 15672: RabbitMQ management port            
-            ).Build();
-
-        MassTransitTestHarness = factory.Services.GetTestHarness();
-
-    }
-
-    public async Task InitializeAsync()
-    {
-        await rabbitMqContainer.StartAsync();
-    }
-
-    public async Task DisposeAsync()
-    {
-        await rabbitMqContainer.DisposeAsync();
     }
 
     [Fact]
@@ -69,9 +40,7 @@ public class ProposeMeetingGroupTests : IClassFixture<MyMeetingsWebApplicationFa
         Assert.NotEqual(Guid.Empty, result.ProposalUserId);
         Assert.Equal("InVerification", result.StatusCode);
 
-        Assert.True(await MassTransitTestHarness.Published.Any<MeetingGroupProposedIntegrationEvent>(
+        Assert.True(await factory.MassTransitTestHarness.Published.Any<MeetingGroupProposedIntegrationEvent>(
             x => x.Context.Message.MeetingGroupProposalId == result.Id));
-
     }
-
 }

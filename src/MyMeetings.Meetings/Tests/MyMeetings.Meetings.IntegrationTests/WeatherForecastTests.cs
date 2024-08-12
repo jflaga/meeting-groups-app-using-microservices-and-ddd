@@ -3,11 +3,17 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace MyMeetings.Meetings.IntegrationTests;
 
-public class WeatherForecastTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public class WeatherForecastTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly List<string> _possibleSummaries =
         ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
+    
+    private readonly WebApplicationFactory<Program> factory;
+
+    public WeatherForecastTests(WebApplicationFactory<Program> factory)
+    {
+        this.factory = factory;
+    }
 
     [Fact]
     public async Task HappyPathReturnsGoodData()
