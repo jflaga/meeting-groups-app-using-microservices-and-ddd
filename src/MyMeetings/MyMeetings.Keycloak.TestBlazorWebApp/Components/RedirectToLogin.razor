@@ -13,6 +13,9 @@ else
 
 @code {
 
+    // NOTE: In "Blazor Samples: Blazor Web App with OpenID Connect (OIDC)" https://github.com/dotnet/blazor-samples/tree/main/8.0/BlazorWebAppOidc
+    //       there is this PersistingAuthenticationStateProvider which has Task<AuthenticationState>.
+    //       If you understood correctly, that is used for Blazor WebAssembly (WASM).
     [CascadingParameter]
     private Task<AuthenticationState> _authenticationStateTask { get; set; }
 

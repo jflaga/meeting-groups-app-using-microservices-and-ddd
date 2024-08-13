@@ -137,6 +137,7 @@ public class KeycloakDataSeeder
     {
         await CreatePostmanClientAsync();
         await CreateTestBlazorWebAppClientAsync();
+        await CreateMeetingGroupsClientBlazorWebAppClientAsync();
     }
 
     private async Task CreateScopeAsync(string scopeName)
@@ -263,6 +264,55 @@ public class KeycloakDataSeeder
             // from https://dev.to/metacosmos/how-to-configure-audience-in-keycloak-kp4
             await AddOptionalClientScopesAsync(clientId, new List<string> { 
                 "TestWebApi_ClientScope" 
+            });
+        }
+
+        var noPostLogoutRedirectUrisYet = !client.Attributes.Any(x => x.Key == "post.logout.redirect.uris");
+        if (noPostLogoutRedirectUrisYet)
+        {
+            client.Attributes.Add("post.logout.redirect.uris", $"{rootUrl.TrimEnd('/')}/signout-callback-oidc");
+            await keycloakClient.UpdateClientAsync(keycloakOptions.RealmName, client.Id, client);
+        }
+    }
+
+    private async Task CreateMeetingGroupsClientBlazorWebAppClientAsync()
+    {
+        const string clientAppName = "MeetingGroupsClient_BlazorWebApp";
+        const string clientId = $"{clientAppName}_Client";
+
+        var client = (await keycloakClient
+            .GetClientsAsync(keycloakOptions.RealmName, clientId: clientId))
+            .FirstOrDefault();
+
+        var rootUrl = $"{configuration[$"Clients:{clientAppName}:RootUrl"]}";
+        if (client == null)
+        {
+            client = new Client
+            {
+                ClientId = clientId,
+                Name = $"{clientAppName} Client",
+                Protocol = "openid-connect",
+                Enabled = true,
+                RedirectUris = new List<string>
+                {
+                    $"{rootUrl.TrimEnd('/')}/signin-oidc"
+                },
+                FrontChannelLogout = true,
+                PublicClient = false,
+                Secret = configuration[$"Clients:{clientAppName}:Secret"],
+            };
+
+            client.Attributes = new Dictionary<string, object>
+            {
+                { "post.logout.redirect.uris", $"{rootUrl.TrimEnd('/')}/signout-callback-oidc" }
+            };
+
+            await keycloakClient.CreateClientAsync(keycloakOptions.RealmName, client);
+
+            // It should be optional because Alice should be able to decide the intended recipient(s) of the access token by specifying different scopes.
+            // from https://dev.to/metacosmos/how-to-configure-audience-in-keycloak-kp4
+            await AddOptionalClientScopesAsync(clientId, new List<string> {
+                "MeetingsModuleWebApi_ClientScope"
             });
         }
 
