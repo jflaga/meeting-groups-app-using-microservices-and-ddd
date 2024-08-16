@@ -108,13 +108,14 @@ app.MapPost("/meetings/MeetingGroupProposals",
             $"/meetings/MeetingGroupProposals/{proposal.Id}",
             proposal); // TODO: Create output DTO
     })
-.RequireAuthorization();
+    .RequireAuthorization();
 
 app.MapGet("/meetings/MeetingGroupProposals",
     ([FromServices] MeetingGroupProposalsService service) =>
     {
         return service.GetAll();
-    });
+    })
+    .RequireAuthorization();
 
 app.MapGet("/meetings/MeetingGroupProposals/{id}",
     (Guid id, [FromServices] MeetingGroupProposalsService service) =>
