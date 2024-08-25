@@ -18,4 +18,13 @@ public class MeetingGroupProposalsService
     {
         return meetingGroupProposals.FirstOrDefault(x => x.Id == id);
     }
+
+    public void Accept(Guid id)
+    {
+        var p = meetingGroupProposals.FirstOrDefault(x => x.Id == id);
+        if (p is not null)
+        {
+            p.StatusCode = "Accepted";
+        }
+    }
 }
