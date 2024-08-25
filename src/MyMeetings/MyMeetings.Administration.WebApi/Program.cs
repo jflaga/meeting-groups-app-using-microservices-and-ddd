@@ -1,4 +1,7 @@
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyMeetings.Administration.WebApi.MeetingGroupProposals;
 using System.Reflection;
 
@@ -8,6 +11,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var authServerSettings = new AuthServerSettings();
+builder.Configuration.GetRequiredSection(nameof(AuthServerSettings))
+    .Bind(authServerSettings);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = authServerSettings.Url;
+        options.Audience = authServerSettings.Audience;
+        options.RequireHttpsMetadata = authServerSettings.RequireHttpsMetadata;
+    });
+
+builder.Services.AddAuthorizationBuilder()
+    .SetDefaultPolicy(new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build());
 
 builder.Services.AddMassTransit(x =>
 {
@@ -23,6 +43,8 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
+builder.Services.AddScoped<MeetingGroupProposalsService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +55,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 var summaries = new[]
 {
@@ -53,6 +78,31 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapGet("/administration/MeetingGroupProposals",
+    async ([FromServices] MeetingGroupProposalsService service) =>
+    {
+        return Results.Ok(service.GetAll());
+    })
+    .RequireAuthorization();
+
+app.MapPost("/administration/MeetingGroupProposals/accept/{id}",
+    async (Guid id,
+        [FromServices] MeetingGroupProposalsService service,
+        IPublishEndpoint publishEndpoint) =>
+    {
+        service.Accept(id);
+
+        await publishEndpoint.Publish(new MeetingGroupProposalAcceptedIntegrationEvent
+        {
+            MeetingGroupProposalId = id
+        });
+
+        return Results.Ok();
+    })
+    .RequireAuthorization();
+
+
 
 app.Run();
 

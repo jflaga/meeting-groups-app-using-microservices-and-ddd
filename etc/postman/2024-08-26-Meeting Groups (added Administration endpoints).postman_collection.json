@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "38c5a93b-4b37-439d-aa1d-c215a45b135a",
+		"name": "Meeting Groups",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4553892"
+	},
+	"item": [
+		{
+			"name": "Keycloak Test Web API",
+			"item": [
+				{
+					"name": "Get weatherforecast",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7184/weatherforecast",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7184",
+							"path": [
+								"weatherforecast"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meetings",
+			"item": [
+				{
+					"name": "Meeting Groups",
+					"item": [
+						{
+							"name": "Create Meeting Group Proposal",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Meeting 102\",\r\n  \"locationCity\": \"Megacity\",\r\n  \"locationCountryCode\": \"Neverland\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7022/meetings/MeetingGroupProposals",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7022",
+									"path": [
+										"meetings",
+										"MeetingGroupProposals"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Meeting Group Proposals",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"name\": \"string\",\r\n  \"locationCity\": \"string\",\r\n  \"locationCountryCode\": \"string\",\r\n  \"proposalUserId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"proposalDate\": \"2024-07-16T21:16:33.263Z\",\r\n  \"statusCode\": \"string\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7022/meetings/MeetingGroupProposals",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7022",
+									"path": [
+										"meetings",
+										"MeetingGroupProposals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Administration",
+			"item": [
+				{
+					"name": "Get Meeting Group Proposals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7113/administration/MeetingGroupProposals",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7113",
+							"path": [
+								"administration",
+								"MeetingGroupProposals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept Meeting Groups Proposal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7113/administration/MeetingGroupProposals/accept/1626a86b-62d1-46e5-aca3-ec5080899601",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7113",
+							"path": [
+								"administration",
+								"MeetingGroupProposals",
+								"accept",
+								"1626a86b-62d1-46e5-aca3-ec5080899601"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "master Realm - Well Known OpenID Config",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/realms/master/.well-known/openid-configuration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"master",
+						".well-known",
+						"openid-configuration"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "scope",
+				"value": "TestWebApi_ClientScope MeetingsModuleWebApi_ClientScope AdministrationModuleWebApi_ClientScope",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "my_postman_client_secret",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "PostmanClient",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
