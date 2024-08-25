@@ -215,7 +215,8 @@ public class KeycloakDataSeeder
         // from https://dev.to/metacosmos/how-to-configure-audience-in-keycloak-kp4
         await AddOptionalClientScopesAsync(PostmanClientId, new List<string> {
             "TestWebApi_ClientScope",
-            "MeetingsModuleWebApi_ClientScope"
+            "MeetingsModuleWebApi_ClientScope",
+            "AdministrationModuleWebApi_ClientScope"
         });
 
         // override: make postman client a confidential client instead of a public client
