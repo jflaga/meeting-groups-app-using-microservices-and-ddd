@@ -27,6 +27,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorizationBuilder()
     .SetDefaultPolicy(new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
+        .RequireRole("AdminRole")
+        //.RequireAssertion(x =>
+        //{
+        //    var roles = x.User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(x => x.Value);
+        //    return roles.Contains("AdminRole");
+        //})
         .Build());
 
 builder.Services.AddMassTransit(x =>
