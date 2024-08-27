@@ -2,6 +2,7 @@
 using Keycloak.Net.Models.Clients;
 using Keycloak.Net.Models.ClientScopes;
 using Keycloak.Net.Models.ProtocolMappers;
+using Keycloak.Net.Models.Roles;
 using Keycloak.Net.Models.Users;
 using Microsoft.Extensions.Options;
 using System;
@@ -41,6 +42,8 @@ public class KeycloakDataSeeder
         await UpdateRealmSettingsAsync();
         await UpdateAdminUserAsync();
         await CreateUserJohnDoeAsync();
+        await CreateRoleMapperAsync(); // roles scope
+
         await CreateClientScopesAsync();
         await CreateClientsAsync();
     }
@@ -93,6 +96,18 @@ public class KeycloakDataSeeder
             logger.LogInformation("Updating admin user with email and first name...");
             await keycloakClient.UpdateUserAsync(keycloakOptions.RealmName, adminUser.Id, adminUser);
         }
+
+        var roles = (await keycloakClient.GetRolesAsync(keycloakOptions.RealmName)).ToList();
+
+        if (!roles.Any(x => x.Name == "AdminRole"))
+        {
+            var adminRole = new Role() { Name = "AdminRole" };            
+            await keycloakClient.CreateRoleAsync(keycloakOptions.RealmName,
+                new Role() { Name = "AdminRole" });
+        }
+
+        await keycloakClient.AddRealmRoleMappingsToUserAsync(keycloakOptions.RealmName,
+            adminUser.Id, roles);
     }
 
     private async Task CreateUserJohnDoeAsync()
@@ -122,6 +137,33 @@ public class KeycloakDataSeeder
             //{
             //    throw;
             //}
+        }
+    }
+
+    private async Task CreateRoleMapperAsync()
+    {
+        var roleScope = (await keycloakClient.GetClientScopesAsync(keycloakOptions.RealmName))
+            .FirstOrDefault(q => q.Name == "roles");
+        if (roleScope == null)
+            return;
+
+        if (!roleScope.ProtocolMappers.Any(q => q.Name == "roles"))
+        {
+            await keycloakClient.CreateProtocolMapperAsync(keycloakOptions.RealmName, roleScope.Id,
+                new ProtocolMapper()
+                {
+                    Name = "roles",
+                    Protocol = "openid-connect",
+                    _ProtocolMapper = "oidc-usermodel-realm-role-mapper",
+                    Config = new Dictionary<string, string>()
+                    {
+                        { "access.token.claim", "true" },
+                        { "id.token.claim", "true" },
+                        { "claim.name", "role" },
+                        { "multivalued", "true" },
+                        { "userinfo.token.claim", "true" },
+                    }
+                });
         }
     }
 
