@@ -2,7 +2,7 @@
 
 public class MeetingGroupProposalDecision
 {
-    public DateTime? Date { get; set; }
+    public DateTimeOffset? Date { get; set; }
 
     public string Code { get; set; }
 

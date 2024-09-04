@@ -19,6 +19,11 @@ public class MeetingGroupProposalsService
         meetingGroupProposals.Add(new MeetingGroupProposal
         {
             Id = id,
+            Decision = new MeetingGroupProposalDecision
+            {
+                Date = DateTimeOffset.Now,
+                Code = "InVerification"
+            }
         });
     }
 
