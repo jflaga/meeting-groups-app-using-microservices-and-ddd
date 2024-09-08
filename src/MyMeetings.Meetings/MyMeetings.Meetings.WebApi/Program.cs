@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyMeetings.Meetings.IntegrationEvents;
 using MyMeetings.Meetings.WebApi.MeetingGroupProposals;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,9 @@ builder.Services.AddAuthorizationBuilder()
 
 builder.Services.AddMassTransit(x =>
 {
+    //x.AddConsumer<MeetingGroupProposalAcceptedIntegrationEventConsumer>();
+    x.AddConsumers(Assembly.GetExecutingAssembly());
+
     x.UsingRabbitMq((context, cfg) =>
     {
         var configuration = context.GetRequiredService<IConfiguration>();

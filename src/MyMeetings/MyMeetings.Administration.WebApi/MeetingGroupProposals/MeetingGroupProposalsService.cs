@@ -33,7 +33,7 @@ public class MeetingGroupProposalsService
         proposal.Decision = new MeetingGroupProposalDecision
         {
             Date = DateTime.Now,
-            Code = "Accept",
+            Code = "Accepted",
         };
     }
 }
