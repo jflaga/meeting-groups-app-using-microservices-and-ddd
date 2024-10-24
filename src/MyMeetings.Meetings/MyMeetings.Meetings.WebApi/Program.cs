@@ -36,6 +36,9 @@ builder.Services.AddMassTransit(x =>
     //x.AddConsumer<MeetingGroupProposalAcceptedIntegrationEventConsumer>();
     x.AddConsumers(Assembly.GetExecutingAssembly());
 
+    // TODO: change to Transactional Outbox
+    x.AddInMemoryInboxOutbox();
+
     x.UsingRabbitMq((context, cfg) =>
     {
         var configuration = context.GetRequiredService<IConfiguration>();
